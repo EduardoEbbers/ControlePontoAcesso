@@ -16,7 +16,6 @@ import javax.persistence.Id;
 @Entity
 public class JornadaTrabalho {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idJornadaTrabalho;
 
     private String descricao;

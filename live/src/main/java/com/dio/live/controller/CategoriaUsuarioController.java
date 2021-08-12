@@ -28,10 +28,11 @@ public class CategoriaUsuarioController {
             }
             return new ResponseEntity<>(
                     categoriaUsuarioService.create(categoriaUsuario),
-                    HttpStatus.CREATED
-            );
+                    HttpStatus.CREATED);
         } catch(Error e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -40,15 +41,15 @@ public class CategoriaUsuarioController {
         try {
             return new ResponseEntity<>(
                     categoriaUsuarioService.findAll(),
-                    HttpStatus.OK
-            );
+                    HttpStatus.OK);
         } catch(Error e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
-                    HttpStatus.NOT_FOUND
-            );
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -63,18 +64,15 @@ public class CategoriaUsuarioController {
             }
             return new ResponseEntity<>(
                     categoriaUsuarioService.findById(idCategoriaUsuario),
-                    HttpStatus.OK
-            );
+                    HttpStatus.OK);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
-                    HttpStatus.BAD_REQUEST
-            );
+                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e1) {
             return new ResponseEntity(
                     e1.getMessage(),
-                    HttpStatus.NOT_FOUND
-            );
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -94,13 +92,11 @@ public class CategoriaUsuarioController {
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
-                    HttpStatus.BAD_REQUEST
-            );
+                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e1) {
             return new ResponseEntity(
                     e1.getMessage(),
-                    HttpStatus.NOT_FOUND
-            );
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -122,8 +118,7 @@ public class CategoriaUsuarioController {
         } catch(NoSuchElementException e1) {
             return new ResponseEntity(
                     e1.getMessage(),
-                    HttpStatus.NOT_FOUND
-            );
+                    HttpStatus.NOT_FOUND);
         }
     }
 }
