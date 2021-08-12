@@ -16,7 +16,6 @@ import javax.persistence.Id;
 @Entity
 public class NivelAcesso {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idNivelAcesso;
 
     private String descricao;
