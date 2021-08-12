@@ -16,8 +16,8 @@ public class NivelAcessoService {
 
     public NivelAcesso create(NivelAcesso categoriaUsuario) {
         try {
-            Optional<NivelAcesso> catUsuario = nivelAcessoRepository.findById(categoriaUsuario.getIdNivelAcesso());
-            if(catUsuario.isPresent()) {
+            Optional<NivelAcesso> nivAcesso = nivelAcessoRepository.findById(categoriaUsuario.getIdNivelAcesso());
+            if(nivAcesso.isPresent()) {
                 throw new Error("Nível Acesso já existe!");
             }
             return nivelAcessoRepository.save(categoriaUsuario);

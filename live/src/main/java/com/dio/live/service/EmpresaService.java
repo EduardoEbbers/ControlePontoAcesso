@@ -16,8 +16,8 @@ public class EmpresaService {
 
     public Empresa create(Empresa empresa) {
         try {
-            Optional<Empresa> catUsuario = empresaRepository.findById(empresa.getIdEmpresa());
-            if(catUsuario.isPresent()) {
+            Optional<Empresa> emp = empresaRepository.findById(empresa.getIdEmpresa());
+            if(emp.isPresent()) {
                 throw new Error("Empresa já existe!");
             }
             return empresaRepository.save(empresa);

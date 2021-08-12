@@ -16,7 +16,6 @@ import javax.persistence.Id;
 @Entity
 public class TipoData {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTipoData;
 
     private String descricao;
