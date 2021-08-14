@@ -19,19 +19,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
-    @ManyToOne
-    private CategoriaUsuario categoriaUsuario;
+    private Long idCategoriaUsuario;
+
+    private Long idEmpresa;
+
+    private Long idNivelAcesso;
+
+    private Long idJornadaTrabalho;
 
     private String nome;
-
-    @ManyToOne
-    private Empresa empresa;
-
-    @ManyToOne
-    private NivelAcesso nivelAcesso;
-
-    @ManyToOne
-    private JornadaTrabalho jornadaTrabalho;
 
     private BigDecimal toleranciaAtraso;
 

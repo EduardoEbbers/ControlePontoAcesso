@@ -122,6 +122,7 @@ public class CalendarioController {
             calendarioService.delete(idCalendario);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         } catch(Error e) {
+
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
