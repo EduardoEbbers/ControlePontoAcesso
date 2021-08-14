@@ -1,13 +1,14 @@
 package com.dio.live.model;
 
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
+import org.apache.tomcat.jni.Local;
+import org.hibernate.annotations.Target;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-@Getter
+
+@Getter()
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,19 +16,11 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 public class Localidade {
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @EqualsAndHashCode
-    @Embeddable
-    public class LocalidadeId implements Serializable {
+    @Id
+    private Long idLocalidade;
 
-        private Long idLocalidade;
-
-        private Long idNivelAcesso;
-    }
-
-    @EmbeddedId
-    private LocalidadeId id;
+    private Long idNivelAcesso;
 
     private String descricao;
+
 }

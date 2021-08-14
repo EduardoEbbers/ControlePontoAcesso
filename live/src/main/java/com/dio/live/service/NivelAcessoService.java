@@ -14,13 +14,13 @@ public class NivelAcessoService {
     @Autowired
     private NivelAcessoRepository nivelAcessoRepository;
 
-    public NivelAcesso create(NivelAcesso categoriaUsuario) {
+    public NivelAcesso create(NivelAcesso nivelAcesso) {
         try {
-            Optional<NivelAcesso> nivAcesso = nivelAcessoRepository.findById(categoriaUsuario.getIdNivelAcesso());
+            Optional<NivelAcesso> nivAcesso = nivelAcessoRepository.findById(nivelAcesso.getIdNivelAcesso());
             if(nivAcesso.isPresent()) {
                 throw new Error("Nível Acesso já existe!");
             }
-            return nivelAcessoRepository.save(categoriaUsuario);
+            return nivelAcessoRepository.save(nivelAcesso);
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -44,12 +44,12 @@ public class NivelAcessoService {
         }
     }
 
-    public NivelAcesso update(NivelAcesso categoriaUsuario) {
+    public NivelAcesso update(NivelAcesso nivelAcesso) {
         try {
             nivelAcessoRepository
-                    .findById(categoriaUsuario.getIdNivelAcesso())
+                    .findById(nivelAcesso.getIdNivelAcesso())
                     .orElseThrow(() -> new NoSuchElementException("Nível Acesso não existe!"));
-            return nivelAcessoRepository.save(categoriaUsuario);
+            return nivelAcessoRepository.save(nivelAcesso);
         } catch(Error e) {
             throw new Error(e.getMessage());
         }

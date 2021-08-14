@@ -18,7 +18,6 @@ public class Calendario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCalendario;
 
-    @ManyToOne
     private TipoData tipoData;
 
     private String descricao;

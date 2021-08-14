@@ -15,19 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 public class Movimentacao {
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @EqualsAndHashCode
-    @Embeddable
-    public class MovimentacaoId implements Serializable {
-
-        private Long idMovimentacao;
-
-        private Long idUsuario;
-    }
-
-    @EmbeddedId
-    private MovimentacaoId id;
+    @Id
+    private Long idMovimentacao;
 
     private LocalDateTime entradaDataMovimentacao;
 
@@ -35,9 +24,7 @@ public class Movimentacao {
 
     private BigDecimal periodoPermanencia;
 
-    @ManyToOne
     private Ocorrencia ocorrencia;
 
-    @ManyToOne
     private Calendario calendario;
 }
