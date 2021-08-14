@@ -18,13 +18,15 @@ public class Movimentacao {
     @Id
     private Long idMovimentacao;
 
+    private Long idUsuario;
+
+    private Long idOcorrencia;
+
+    private Long idCalendario;
+
     private LocalDateTime entradaDataMovimentacao;
 
     private LocalDateTime saidaDataMovimentacao;
 
     private BigDecimal periodoPermanencia;
-
-    private Ocorrencia ocorrencia;
-
-    private Calendario calendario;
 }
