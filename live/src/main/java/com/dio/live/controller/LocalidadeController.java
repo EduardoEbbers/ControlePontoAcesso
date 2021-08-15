@@ -3,7 +3,6 @@ package com.dio.live.controller;
 import com.dio.live.model.Localidade;
 import com.dio.live.service.LocalidadeService;
 import com.dio.live.service.NivelAcessoService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,9 @@ public class LocalidadeController {
     @PostMapping
     public ResponseEntity<Localidade> createLocalidade(@RequestBody Localidade localidade) {
         try {
-            if((localidade.getIdLocalidade() == null) || (localidade.getIdNivelAcesso() == null) || (localidade.getDescricao() == null)) {
+            if((localidade.getIdLocalidade() == null)
+                    || (localidade.getIdNivelAcesso() == null)
+                    || (localidade.getDescricao() == null)) {
                 throw new Error("Localidade Id, Nível Acesso Id e Descrição são Obrigatórios!");
             }
             if(localidade.getIdLocalidade() <= 0) {
@@ -49,14 +50,14 @@ public class LocalidadeController {
             return new ResponseEntity<>(
                     localidadeService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -72,21 +73,23 @@ public class LocalidadeController {
             return new ResponseEntity<>(
                     localidadeService.findById(idLocalidade),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Localidade> updateLocalidade(@RequestBody Localidade localidade) {
         try {
-            if((localidade.getIdLocalidade() == null) || (localidade.getIdNivelAcesso() == null) || (localidade.getDescricao() == null)) {
+            if((localidade.getIdLocalidade() == null)
+                    || (localidade.getIdNivelAcesso() == null)
+                    || (localidade.getDescricao() == null)) {
                 throw new Error("Localidade Id, Nível Acesso Id e Descrição são Obrigatórios!");
             }
             if(localidade.getIdLocalidade() <= 0) {
@@ -99,14 +102,14 @@ public class LocalidadeController {
                     localidadeService.update(localidade),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -121,14 +124,14 @@ public class LocalidadeController {
             }
             localidadeService.delete(idLocalidade);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

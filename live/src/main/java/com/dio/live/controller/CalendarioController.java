@@ -2,7 +2,6 @@ package com.dio.live.controller;
 
 import com.dio.live.model.Calendario;
 import com.dio.live.service.CalendarioService;
-import com.dio.live.service.NivelAcessoService;
 import com.dio.live.service.TipoDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,10 @@ public class CalendarioController {
     @PostMapping
     public ResponseEntity<Calendario> createCalendario(@RequestBody Calendario calendario) {
         try {
-            if((calendario.getIdCalendario() == null) || (calendario.getIdTipoData() == null) || (calendario.getDescricao() == null) || (calendario.getDataEspecial() == null)) {
+            if((calendario.getIdCalendario() == null)
+                    || (calendario.getIdTipoData() == null)
+                    || (calendario.getDescricao() == null)
+                    || (calendario.getDataEspecial() == null)) {
                 throw new Error("Calendário Id, Tipo Data Id, Descrição e Data Especial são Obrigatórios!");
             }
             if(calendario.getIdCalendario() <= 0) {
@@ -49,14 +51,14 @@ public class CalendarioController {
             return new ResponseEntity<>(
                     calendarioService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -72,21 +74,24 @@ public class CalendarioController {
             return new ResponseEntity<>(
                     calendarioService.findById(idCalendario),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Calendario> updateCalendario(@RequestBody Calendario calendario) {
         try {
-            if((calendario.getIdCalendario() == null) || (calendario.getIdTipoData() == null) || (calendario.getDescricao() == null) || (calendario.getDataEspecial() == null)) {
+            if((calendario.getIdCalendario() == null)
+                    || (calendario.getIdTipoData() == null)
+                    || (calendario.getDescricao() == null)
+                    || (calendario.getDataEspecial() == null)) {
                 throw new Error("Calendário Id, Tipo Data Id, Descrição e Data Especial são Obrigatórios!");
             }
             if(calendario.getIdCalendario() <= 0) {
@@ -99,14 +104,14 @@ public class CalendarioController {
                     calendarioService.update(calendario),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -121,15 +126,15 @@ public class CalendarioController {
             }
             calendarioService.delete(idCalendario);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e1) {
+            return new ResponseEntity(
+                    e1.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
 
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -16,7 +16,8 @@ public class TipoDataService {
 
     public TipoData create(TipoData tipoData) {
         try {
-            Optional<TipoData> tipData = tipoDataRepository.findById(tipoData.getIdTipoData());
+            Optional<TipoData> tipData = tipoDataRepository
+                    .findById(tipoData.getIdTipoData());
             if(tipData.isPresent()) {
                 throw new Error("Tipo Data já existe!");
             }
@@ -29,7 +30,9 @@ public class TipoDataService {
     public List<TipoData> findAll() {
         try {
             return tipoDataRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Tipos de Data não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }

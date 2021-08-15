@@ -19,7 +19,8 @@ public class NivelAcessoController {
     @PostMapping
     public ResponseEntity<NivelAcesso> createNivelAcesso(@RequestBody NivelAcesso nivelAcesso) {
         try {
-            if((nivelAcesso.getIdNivelAcesso() == null) || (nivelAcesso.getDescricao() == null)) {
+            if((nivelAcesso.getIdNivelAcesso() == null)
+                    || (nivelAcesso.getDescricao() == null)) {
                 throw new Error("Nível Acesso Id e Descrição são Obrigatórios!");
             }
             if(nivelAcesso.getIdNivelAcesso() <= 0) {
@@ -41,14 +42,14 @@ public class NivelAcessoController {
             return new ResponseEntity<>(
                     nivelAcessoService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -64,21 +65,22 @@ public class NivelAcessoController {
             return new ResponseEntity<>(
                     nivelAcessoService.findById(idNivelAcesso),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<NivelAcesso> updateNivelAcesso(@RequestBody NivelAcesso nivelAcesso) {
         try {
-            if((nivelAcesso.getIdNivelAcesso() == null) || (nivelAcesso.getDescricao() == null)) {
+            if((nivelAcesso.getIdNivelAcesso() == null)
+                    || (nivelAcesso.getDescricao() == null)) {
                 throw new Error("Nível Acesso Id e Descrição são Obrigatórios!");
             }
             if(nivelAcesso.getIdNivelAcesso() <= 0) {
@@ -88,14 +90,14 @@ public class NivelAcessoController {
                     nivelAcessoService.update(nivelAcesso),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -110,14 +112,14 @@ public class NivelAcessoController {
             }
             nivelAcessoService.delete(idNivelAcesso);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

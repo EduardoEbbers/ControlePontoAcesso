@@ -19,7 +19,9 @@ public class OcorrenciaController {
     @PostMapping
     public ResponseEntity<Ocorrencia> createOcorrencia(@RequestBody Ocorrencia ocorrencia) {
         try {
-            if((ocorrencia.getIdOcorrencia() == null) || (ocorrencia.getNome() == null) || (ocorrencia.getDescricao() == null)) {
+            if((ocorrencia.getIdOcorrencia() == null)
+                    || (ocorrencia.getNome() == null)
+                    || (ocorrencia.getDescricao() == null)) {
                 throw new Error("Ocorrência Id, Nome e Descrição são Obrigatórios!");
             }
             if(ocorrencia.getIdOcorrencia() <= 0) {
@@ -41,14 +43,14 @@ public class OcorrenciaController {
             return new ResponseEntity<>(
                     ocorrenciaService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -64,21 +66,23 @@ public class OcorrenciaController {
             return new ResponseEntity<>(
                     ocorrenciaService.findById(idOcorrencia),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Ocorrencia> updateOcorrencia(@RequestBody Ocorrencia ocorrencia) {
         try {
-            if((ocorrencia.getIdOcorrencia() == null) || (ocorrencia.getNome() == null) || (ocorrencia.getDescricao() == null)) {
+            if((ocorrencia.getIdOcorrencia() == null)
+                    || (ocorrencia.getNome() == null)
+                    || (ocorrencia.getDescricao() == null)) {
                 throw new Error("Ocorrência Id, Nome e Descrição são Obrigatórios!");
             }
             if(ocorrencia.getIdOcorrencia() <= 0) {
@@ -88,14 +92,14 @@ public class OcorrenciaController {
                     ocorrenciaService.update(ocorrencia),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -110,14 +114,14 @@ public class OcorrenciaController {
             }
             ocorrenciaService.delete(idOcorrencia);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

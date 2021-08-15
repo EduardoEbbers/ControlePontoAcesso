@@ -3,9 +3,8 @@ package com.dio.live.model;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -13,9 +12,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class JornadaTrabalho {
-    @Id
+public class JornadaTrabalho implements Serializable {
+
     private Long idJornadaTrabalho;
 
     private String descricao;

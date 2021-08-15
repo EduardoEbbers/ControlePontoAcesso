@@ -1,9 +1,7 @@
 package com.dio.live.service;
 
 import com.dio.live.model.Calendario;
-import com.dio.live.model.TipoData;
 import com.dio.live.repository.CalendarioRepository;
-import com.dio.live.repository.NivelAcessoRepository;
 import com.dio.live.repository.TipoDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,8 @@ public class CalendarioService {
             tipoDataRepository
                     .findById(calendario.getIdTipoData())
                     .orElseThrow(() -> new NoSuchElementException("Tipo Data não existe!"));
-            Optional<Calendario> calend = calendarioRepository.findById(calendario.getIdCalendario());
+            Optional<Calendario> calend = calendarioRepository
+                    .findById(calendario.getIdCalendario());
             if(calend.isPresent()) {
                 throw new Error("Calendário já existe!");
             }
@@ -38,7 +37,9 @@ public class CalendarioService {
     public List<Calendario> findAll() {
         try {
             return calendarioRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Calendários não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }

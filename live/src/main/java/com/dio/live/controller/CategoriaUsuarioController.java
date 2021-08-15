@@ -1,6 +1,5 @@
 package com.dio.live.controller;
 
-
 import com.dio.live.model.CategoriaUsuario;
 import com.dio.live.service.CategoriaUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,8 @@ public class CategoriaUsuarioController {
     @PostMapping
     public ResponseEntity<CategoriaUsuario> createCategoriaUsuario(@RequestBody CategoriaUsuario categoriaUsuario) {
         try {
-            if((categoriaUsuario.getIdCategoriaUsuario() == null) || (categoriaUsuario.getDescricao() == null)) {
+            if((categoriaUsuario.getIdCategoriaUsuario() == null)
+                    || (categoriaUsuario.getDescricao() == null)) {
                throw new Error("Categoria Usuário Id e Descrição são Obrigatórios!");
             }
             if(categoriaUsuario.getIdCategoriaUsuario() <= 0) {
@@ -42,44 +42,45 @@ public class CategoriaUsuarioController {
             return new ResponseEntity<>(
                     categoriaUsuarioService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/{idCategoriaUsuario}")
-    public ResponseEntity<CategoriaUsuario> getCategoriaUsuarioById(@PathVariable("idCategoriaUsuario") Long idCategoriaUsuario) {
-        try {
-            if(idCategoriaUsuario == null) {
-                throw new Error("Categoria Usuário Id é Obrigatório!");
-            }
-            if(idCategoriaUsuario <= 0) {
-                throw new Error("Categoria Usuário Id está incorreto!");
-            }
-            return new ResponseEntity<>(
-                    categoriaUsuarioService.findById(idCategoriaUsuario),
-                    HttpStatus.OK);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
+        }
+    }
+
+    @GetMapping("/{idCategoria}")
+    public ResponseEntity<CategoriaUsuario> getCategoriaUsuarioById(@PathVariable("idCategoria") Long idCategoria) {
+        try {
+            if(idCategoria == null) {
+                throw new Error("Categoria Usuário Id é Obrigatório!");
+            }
+            if(idCategoria <= 0) {
+                throw new Error("Categoria Usuário Id está incorreto!");
+            }
+            return new ResponseEntity<>(
+                    categoriaUsuarioService.findById(idCategoria),
+                    HttpStatus.OK);
+        } catch(NoSuchElementException e) {
             return new ResponseEntity(
-                    e1.getMessage(),
+                    e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping
     public ResponseEntity<CategoriaUsuario> updateCategoriaUsuario(@RequestBody CategoriaUsuario categoriaUsuario) {
         try {
-            if((categoriaUsuario.getIdCategoriaUsuario() == null) || (categoriaUsuario.getDescricao() == null)) {
+            if((categoriaUsuario.getIdCategoriaUsuario() == null)
+                    || (categoriaUsuario.getDescricao() == null)) {
                 throw new Error("Categoria Usuário Id e Descrição são Obrigatórios!");
             }
             if(categoriaUsuario.getIdCategoriaUsuario() <= 0) {
@@ -89,36 +90,36 @@ public class CategoriaUsuarioController {
                     categoriaUsuarioService.update(categoriaUsuario),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{idCategoriaUsuario}")
-    public ResponseEntity deleteCategoriaUsuario(@PathVariable("idCategoriaUsuario") Long idCategoriaUsuario) {
+    @DeleteMapping("/{idCategoria}")
+    public ResponseEntity deleteCategoriaUsuario(@PathVariable("idCategoria") Long idCategoria) {
         try {
-            if(idCategoriaUsuario == null) {
+            if(idCategoria == null) {
                 throw new Error("Categoria Usuário Id é Obrigatório!");
             }
-            if(idCategoriaUsuario <= 0) {
+            if(idCategoria <= 0) {
                 throw new Error("Categoria Usuário Id está incorreto!");
             }
-            categoriaUsuarioService.delete(idCategoriaUsuario);
+            categoriaUsuarioService.delete(idCategoria);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

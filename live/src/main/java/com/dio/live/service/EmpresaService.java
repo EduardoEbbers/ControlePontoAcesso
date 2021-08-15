@@ -16,7 +16,8 @@ public class EmpresaService {
 
     public Empresa create(Empresa empresa) {
         try {
-            Optional<Empresa> emp = empresaRepository.findById(empresa.getIdEmpresa());
+            Optional<Empresa> emp = empresaRepository
+                    .findById(empresa.getIdEmpresa());
             if(emp.isPresent()) {
                 throw new Error("Empresa já existe!");
             }
@@ -29,7 +30,9 @@ public class EmpresaService {
     public List<Empresa> findAll() {
         try {
             return empresaRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Empresas não existem!");
+        }  catch (Error e) {
             throw new Error(e.getMessage());
         }
     }

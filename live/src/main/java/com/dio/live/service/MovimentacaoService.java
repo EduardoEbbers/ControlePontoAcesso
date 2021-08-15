@@ -3,7 +3,8 @@ package com.dio.live.service;
 import com.dio.live.model.Movimentacao;
 import com.dio.live.repository.CalendarioRepository;
 import com.dio.live.repository.MovimentacaoRepository;
-import com.dio.live.repository.TipoDataRepository;
+import com.dio.live.repository.OcorrenciaRepository;
+import com.dio.live.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,27 @@ public class MovimentacaoService {
     private MovimentacaoRepository movimentacaoRepository;
 
     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private OcorrenciaRepository ocorrenciaRepository;
+
+    @Autowired
     private CalendarioRepository calendarioRepository;
     
     public Movimentacao create(Movimentacao movimentacao) {
         try {
+            usuarioRepository
+                    .findById(movimentacao.getIdUsuario())
+                    .orElseThrow(() -> new NoSuchElementException("Usuário não existe!"));
+            ocorrenciaRepository
+                    .findById(movimentacao.getIdOcorrencia())
+                    .orElseThrow(() -> new NoSuchElementException("Ocorrência não existe!"));
             calendarioRepository
                     .findById(movimentacao.getIdCalendario())
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));
-            Optional<Movimentacao> mov = movimentacaoRepository.findById(movimentacao.getIdMovimentacao());
+            Optional<Movimentacao> mov = movimentacaoRepository
+                    .findById(movimentacao.getIdMovimentacao());
             if(mov.isPresent()) {
                 throw new Error("Movimentação já existe!");
             }
@@ -37,6 +51,8 @@ public class MovimentacaoService {
     public List<Movimentacao> findAll() {
         try {
             return movimentacaoRepository.findAll();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Movimentações não existem!");
         } catch (Error e) {
             throw new Error(e.getMessage());
         }
@@ -54,6 +70,12 @@ public class MovimentacaoService {
 
     public Movimentacao update(Movimentacao movimentacao) {
         try {
+            usuarioRepository
+                    .findById(movimentacao.getIdUsuario())
+                    .orElseThrow(() -> new NoSuchElementException("Usuário não existe!"));
+            ocorrenciaRepository
+                    .findById(movimentacao.getIdOcorrencia())
+                    .orElseThrow(() -> new NoSuchElementException("Ocorrência não existe!"));
             calendarioRepository
                     .findById(movimentacao.getIdCalendario())
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));

@@ -31,7 +31,15 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
         try {
-            if((usuario.getIdUsuario() == null) || (usuario.getIdCategoriaUsuario() == null) || (usuario.getIdEmpresa() == null) || (usuario.getIdNivelAcesso() == null) || (usuario.getIdJornadaTrabalho() == null) || (usuario.getNome() == null) || (usuario.getToleranciaAtraso() == null) || (usuario.getInicioJornadaTrabalho() == null) || (usuario.getSaidaJornadaTrabalho() == null)) {
+            if((usuario.getIdUsuario() == null)
+                    || (usuario.getIdCategoriaUsuario() == null)
+                    || (usuario.getIdEmpresa() == null)
+                    || (usuario.getIdNivelAcesso() == null)
+                    || (usuario.getIdJornadaTrabalho() == null)
+                    || (usuario.getNome() == null)
+                    || (usuario.getToleranciaAtraso() == null)
+                    || (usuario.getInicioJornadaTrabalho() == null)
+                    || (usuario.getSaidaJornadaTrabalho() == null)) {
                 throw new Error("Usuário Id, Categoria Usuário Id, Empresa Id, Nível Acesso Id, Jornada Trabalho Id, Nome, Tolerância Atraso, Início Jornada Trabalho e Saída Jornada Trabalho são Obrigatórios!");
             }
             if(usuario.getIdUsuario() <= 0) {
@@ -65,14 +73,14 @@ public class UsuarioController {
             return new ResponseEntity<>(
                     usuarioService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -80,29 +88,37 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable("idUsuario") Long idUsuario) {
         try {
             if(idUsuario == null) {
-                throw new Error("Calendário Id é Obrigatório!");
+                throw new Error("Usuário Id é Obrigatório!");
             }
             if(idUsuario <= 0) {
-                throw new Error("Calendário Id está incorreto!");
+                throw new Error("Usuário Id está incorreto!");
             }
             return new ResponseEntity<>(
                     usuarioService.findById(idUsuario),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario) {
         try {
-            if((usuario.getIdUsuario() == null) || (usuario.getIdCategoriaUsuario() == null) || (usuario.getIdEmpresa() == null) || (usuario.getIdNivelAcesso() == null) || (usuario.getIdJornadaTrabalho() == null) || (usuario.getNome() == null) || (usuario.getToleranciaAtraso() == null) || (usuario.getInicioJornadaTrabalho() == null) || (usuario.getSaidaJornadaTrabalho() == null)) {
+            if((usuario.getIdUsuario() == null)
+                    || (usuario.getIdCategoriaUsuario() == null)
+                    || (usuario.getIdEmpresa() == null)
+                    || (usuario.getIdNivelAcesso() == null)
+                    || (usuario.getIdJornadaTrabalho() == null)
+                    || (usuario.getNome() == null)
+                    || (usuario.getToleranciaAtraso() == null)
+                    || (usuario.getInicioJornadaTrabalho() == null)
+                    || (usuario.getSaidaJornadaTrabalho() == null)) {
                 throw new Error("Usuário Id, Categoria Usuário Id, Empresa Id, Nível Acesso Id, Jornada Trabalho Id, Nome, Tolerância Atraso, Início Jornada Trabalho e Saída Jornada Trabalho são Obrigatórios!");
             }
             if(usuario.getIdUsuario() <= 0) {
@@ -124,14 +140,14 @@ public class UsuarioController {
                     usuarioService.update(usuario),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -146,14 +162,14 @@ public class UsuarioController {
             }
             usuarioService.delete(idUsuario);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

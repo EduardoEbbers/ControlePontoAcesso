@@ -1,13 +1,9 @@
 package com.dio.live.model;
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -15,9 +11,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class CategoriaUsuario {
-    @Id
+public class CategoriaUsuario implements Serializable {
+
     private Long idCategoriaUsuario;
 
     private String descricao;

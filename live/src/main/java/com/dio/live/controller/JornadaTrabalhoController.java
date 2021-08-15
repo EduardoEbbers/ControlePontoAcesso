@@ -1,6 +1,5 @@
 package com.dio.live.controller;
 
-
 import com.dio.live.model.JornadaTrabalho;
 import com.dio.live.service.JornadaTrabalhoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,8 @@ public class JornadaTrabalhoController {
     @PostMapping
     public ResponseEntity<JornadaTrabalho> createJornadaTrabalho(@RequestBody JornadaTrabalho jornadaTrabalho) {
         try {
-            if((jornadaTrabalho.getIdJornadaTrabalho() == null) || (jornadaTrabalho.getDescricao() == null)) {
+            if((jornadaTrabalho.getIdJornadaTrabalho() == null)
+                    || (jornadaTrabalho.getDescricao() == null)) {
                 throw new Error("Jornada Trabalho Id e Descrição são Obrigatórios!");
             }
             if(jornadaTrabalho.getIdJornadaTrabalho() <= 0) {
@@ -42,44 +42,45 @@ public class JornadaTrabalhoController {
             return new ResponseEntity<>(
                     jornadaTrabalhoService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/{idJornadaTrabalho}")
-    public ResponseEntity<JornadaTrabalho> getJornadaTrabalhoById(@PathVariable("idJornadaTrabalho") Long idJornadaTrabalho) {
-        try {
-            if(idJornadaTrabalho == null) {
-                throw new Error("Jornada Trabalho Id é Obrigatório!");
-            }
-            if(idJornadaTrabalho <= 0) {
-                throw new Error("Jornada Trabalho Id está incorreto!");
-            }
-            return new ResponseEntity<>(
-                    jornadaTrabalhoService.findById(idJornadaTrabalho),
-                    HttpStatus.OK);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
+        }
+    }
+
+    @GetMapping("/{idJornada}")
+    public ResponseEntity<JornadaTrabalho> getJornadaTrabalhoById(@PathVariable("idJornada") Long idJornada) {
+        try {
+            if(idJornada == null) {
+                throw new Error("Jornada Trabalho Id é Obrigatório!");
+            }
+            if(idJornada <= 0) {
+                throw new Error("Jornada Trabalho Id está incorreto!");
+            }
+            return new ResponseEntity<>(
+                    jornadaTrabalhoService.findById(idJornada),
+                    HttpStatus.OK);
+        } catch(NoSuchElementException e) {
             return new ResponseEntity(
-                    e1.getMessage(),
+                    e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping
     public ResponseEntity<JornadaTrabalho> updateJornadaTrabalho(@RequestBody JornadaTrabalho jornadaTrabalho) {
         try {
-            if((jornadaTrabalho.getIdJornadaTrabalho() == null) || (jornadaTrabalho.getDescricao() == null)) {
+            if((jornadaTrabalho.getIdJornadaTrabalho() == null)
+                    || (jornadaTrabalho.getDescricao() == null)) {
                 throw new Error("Jornada Trabalho Id e Descrição são Obrigatórios!");
             }
             if(jornadaTrabalho.getIdJornadaTrabalho() <= 0) {
@@ -88,36 +89,36 @@ public class JornadaTrabalhoController {
             return new ResponseEntity<>(
                     jornadaTrabalhoService.update(jornadaTrabalho),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{idJornadaTrabalho}")
-    public ResponseEntity deleteJornadaTrabalho(@PathVariable("idJornadaTrabalho") Long idJornadaTrabalho) {
+    @DeleteMapping("/{idJornada}")
+    public ResponseEntity deleteJornadaTrabalho(@PathVariable("idJornada") Long idJornada) {
         try {
-            if(idJornadaTrabalho == null) {
+            if(idJornada == null) {
                 throw new Error("Jornada Trabalho Id é Obrigatório!");
             }
-            if(idJornadaTrabalho <= 0) {
+            if(idJornada <= 0) {
                 throw new Error("Jornada Trabalho Id está incorreto!");
             }
-            jornadaTrabalhoService.delete(idJornadaTrabalho);
+            jornadaTrabalhoService.delete(idJornada);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

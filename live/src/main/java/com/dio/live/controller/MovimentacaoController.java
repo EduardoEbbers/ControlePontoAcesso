@@ -1,9 +1,7 @@
 package com.dio.live.controller;
 
 import com.dio.live.model.Movimentacao;
-import com.dio.live.service.CalendarioService;
-import com.dio.live.service.MovimentacaoService;
-import com.dio.live.service.TipoDataService;
+import com.dio.live.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +11,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("movimentacao")
+@RequestMapping("/movimentacao")
 public class MovimentacaoController {
     @Autowired
     private MovimentacaoService movimentacaoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private OcorrenciaService ocorrenciaService;
 
     @Autowired
     private CalendarioService calendarioService;
@@ -24,7 +28,13 @@ public class MovimentacaoController {
     @PostMapping
     public ResponseEntity<Movimentacao> createMovimentacao(@RequestBody Movimentacao movimentacao) {
         try {
-            if((movimentacao.getIdMovimentacao() == null) || (movimentacao.getIdUsuario() == null) || (movimentacao.getIdOcorrencia() == null) || (movimentacao.getIdCalendario() == null) || (movimentacao.getEntradaDataMovimentacao() == null) || (movimentacao.getSaidaDataMovimentacao() == null) || (movimentacao.getPeriodoPermanencia() == null)) {
+            if((movimentacao.getIdMovimentacao() == null)
+                    || (movimentacao.getIdUsuario() == null)
+                    || (movimentacao.getIdOcorrencia() == null)
+                    || (movimentacao.getIdCalendario() == null)
+                    || (movimentacao.getEntradaDataMovimentacao() == null)
+                    || (movimentacao.getSaidaDataMovimentacao() == null)
+                    || (movimentacao.getPeriodoPermanencia() == null)) {
                 throw new Error("Movimentação Id, Usuário Id, Ocorrência Id, Calendário Id, Entrada Data Movimentação, Saída Data Movimentação e Período Permanência são Obrigatórios!");
             }
             if(movimentacao.getIdMovimentacao() <= 0) {
@@ -55,14 +65,14 @@ public class MovimentacaoController {
             return new ResponseEntity<>(
                     movimentacaoService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -78,21 +88,27 @@ public class MovimentacaoController {
             return new ResponseEntity<>(
                     movimentacaoService.findById(idMovimentacao),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Movimentacao> updateMovimentacao(@RequestBody Movimentacao movimentacao) {
         try {
-            if((movimentacao.getIdMovimentacao() == null) || (movimentacao.getIdUsuario() == null) || (movimentacao.getIdOcorrencia() == null) || (movimentacao.getIdCalendario() == null) || (movimentacao.getEntradaDataMovimentacao() == null) || (movimentacao.getSaidaDataMovimentacao() == null) || (movimentacao.getPeriodoPermanencia() == null)) {
+            if((movimentacao.getIdMovimentacao() == null)
+                    || (movimentacao.getIdUsuario() == null)
+                    || (movimentacao.getIdOcorrencia() == null)
+                    || (movimentacao.getIdCalendario() == null)
+                    || (movimentacao.getEntradaDataMovimentacao() == null)
+                    || (movimentacao.getSaidaDataMovimentacao() == null)
+                    || (movimentacao.getPeriodoPermanencia() == null)) {
                 throw new Error("Movimentação Id, Usuário Id, Ocorrência Id, Calendário Id, Entrada Data Movimentação, Saída Data Movimentação e Período Permanência são Obrigatórios!");
             }
             if(movimentacao.getIdMovimentacao() <= 0) {
@@ -111,14 +127,14 @@ public class MovimentacaoController {
                     movimentacaoService.update(movimentacao),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -133,14 +149,14 @@ public class MovimentacaoController {
             }
             movimentacaoService.delete(idMovimentacao);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

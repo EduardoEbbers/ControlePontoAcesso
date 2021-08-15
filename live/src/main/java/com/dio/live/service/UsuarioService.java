@@ -1,6 +1,5 @@
 package com.dio.live.service;
 
-import com.dio.live.model.CategoriaUsuario;
 import com.dio.live.model.Usuario;
 import com.dio.live.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,8 @@ public class UsuarioService {
     public List<Usuario> findAll() {
         try {
             return usuarioRepository.findAll();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Usuários não existem!");
         } catch (Error e) {
             throw new Error(e.getMessage());
         }

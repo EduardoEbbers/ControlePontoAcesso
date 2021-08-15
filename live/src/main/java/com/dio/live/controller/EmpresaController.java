@@ -19,7 +19,14 @@ public class EmpresaController {
     @PostMapping
     public ResponseEntity<Empresa> createEmpresa(@RequestBody Empresa empresa) {
         try {
-            if((empresa.getIdEmpresa() == null) || (empresa.getDescricao() == null) || (empresa.getCnpj() == null) || (empresa.getEndereco() == null) || (empresa.getBairro() == null) || (empresa.getCidade() == null) || (empresa.getEstado() == null) || (empresa.getTelefone() == null)) {
+            if((empresa.getIdEmpresa() == null)
+                    || (empresa.getDescricao() == null)
+                    || (empresa.getCnpj() == null)
+                    || (empresa.getEndereco() == null)
+                    || (empresa.getBairro() == null)
+                    || (empresa.getCidade() == null)
+                    || (empresa.getEstado() == null)
+                    || (empresa.getTelefone() == null)) {
                 throw new Error("Empresa Id, Descrição, CNPJ, Endereço, Bairro, Cidade, Estado e Telefone são Obrigatórios!");
             }
             if(empresa.getIdEmpresa() <= 0) {
@@ -41,14 +48,14 @@ public class EmpresaController {
             return new ResponseEntity<>(
                     empresaService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -64,21 +71,28 @@ public class EmpresaController {
             return new ResponseEntity<>(
                     empresaService.findById(idEmpresa),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<Empresa> updateEmpresa(@RequestBody Empresa empresa) {
         try {
-            if((empresa.getIdEmpresa() == null) || (empresa.getDescricao() == null) || (empresa.getCnpj() == null) || (empresa.getEndereco() == null) || (empresa.getBairro() == null) || (empresa.getCidade() == null) || (empresa.getEstado() == null) || (empresa.getTelefone() == null)) {
+            if((empresa.getIdEmpresa() == null)
+                    || (empresa.getDescricao() == null)
+                    || (empresa.getCnpj() == null)
+                    || (empresa.getEndereco() == null)
+                    || (empresa.getBairro() == null)
+                    || (empresa.getCidade() == null)
+                    || (empresa.getEstado() == null)
+                    || (empresa.getTelefone() == null)) {
                 throw new Error("Empresa Id, Descrição, CNPJ, Endereço, Bairro, Cidade, Estado e Telefone são Obrigatórios!");
             }
             if(empresa.getIdEmpresa() <= 0) {
@@ -88,14 +102,14 @@ public class EmpresaController {
                     empresaService.update(empresa),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -110,14 +124,14 @@ public class EmpresaController {
             }
             empresaService.delete(idEmpresa);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e1) {
             return new ResponseEntity(
                     e1.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 }

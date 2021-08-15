@@ -2,10 +2,8 @@ package com.dio.live.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -13,10 +11,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class Ocorrencia {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class Ocorrencia implements Serializable {
     private Long idOcorrencia;
 
     private String nome;

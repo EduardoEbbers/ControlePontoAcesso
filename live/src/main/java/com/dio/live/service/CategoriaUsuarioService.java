@@ -16,7 +16,8 @@ public class CategoriaUsuarioService {
 
     public CategoriaUsuario create(CategoriaUsuario categoriaUsuario) {
         try {
-            Optional<CategoriaUsuario> catUsuario = categoriaUsuarioRepository.findById(categoriaUsuario.getIdCategoriaUsuario());
+            Optional<CategoriaUsuario> catUsuario = categoriaUsuarioRepository
+                    .findById(categoriaUsuario.getIdCategoriaUsuario());
             if(catUsuario.isPresent()) {
                 throw new Error("Categoria Usuário já existe!");
             }
@@ -29,7 +30,9 @@ public class CategoriaUsuarioService {
     public List<CategoriaUsuario> findAll() {
         try {
             return categoriaUsuarioRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Usuários não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }

@@ -13,21 +13,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class BancoHoras {
-    @Id
-    private Long idBancoHoras;
+public class BancoHora implements Serializable {
+
+    private Long idBancoHora;
 
     private Long idMovimentacao;
-
-    // funciona so com chave composta
-    //private Long idUsuario;
 
     private String categoriaUsuario;
 
     private LocalDateTime dataTrabalhada;
 
-    private BigDecimal quantidadeHorasTrabalhadas;
+    private BigDecimal quantidadeHorasTrabalhada;
 
-    private BigDecimal saldoHorasTrabalhadas;
+    private BigDecimal saldoHorasTrabalhada;
 }

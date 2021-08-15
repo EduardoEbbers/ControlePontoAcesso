@@ -1,9 +1,9 @@
 package com.dio.live.repository;
 
-import com.dio.live.model.BancoHoras;
+import com.dio.live.model.BancoHora;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BancoHorasRepository extends JpaRepository<BancoHoras, Long> {
+public interface BancoHoraRepository extends JpaRepository<BancoHora, Long> {
 }

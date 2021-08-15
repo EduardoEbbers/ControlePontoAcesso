@@ -13,9 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class Movimentacao {
-    @Id
+public class Movimentacao implements Serializable {
     private Long idMovimentacao;
 
     private Long idUsuario;

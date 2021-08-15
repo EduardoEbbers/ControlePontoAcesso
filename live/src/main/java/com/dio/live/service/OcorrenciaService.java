@@ -16,7 +16,8 @@ public class OcorrenciaService {
 
     public Ocorrencia create(Ocorrencia ocorrencia) {
         try {
-            Optional<Ocorrencia> ocorr = ocorrenciaRepository.findById(ocorrencia.getIdOcorrencia());
+            Optional<Ocorrencia> ocorr = ocorrenciaRepository
+                    .findById(ocorrencia.getIdOcorrencia());
             if(ocorr.isPresent()) {
                 throw new Error("Ocorrência já existe!");
             }
@@ -29,7 +30,9 @@ public class OcorrenciaService {
     public List<Ocorrencia> findAll() {
         try {
             return ocorrenciaRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Ocorrências não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }

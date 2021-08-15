@@ -1,7 +1,6 @@
 package com.dio.live.service;
 
 import com.dio.live.model.Localidade;
-import com.dio.live.model.NivelAcesso;
 import com.dio.live.repository.LocalidadeRepository;
 import com.dio.live.repository.NivelAcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,8 @@ public class LocalidadeService {
             nivelAcessoRepository
                     .findById(localidade.getIdNivelAcesso())
                     .orElseThrow(() -> new NoSuchElementException("Nível Acesso não existe!"));
-            Optional<Localidade> loc = localidadeRepository.findById(localidade.getIdLocalidade());
+            Optional<Localidade> loc = localidadeRepository
+                    .findById(localidade.getIdLocalidade());
             if(loc.isPresent()) {
                 throw new Error("Localidade já existe!");
             }
@@ -37,7 +37,9 @@ public class LocalidadeService {
     public List<Localidade> findAll() {
         try {
             return localidadeRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Localidades não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }

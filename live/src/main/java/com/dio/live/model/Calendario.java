@@ -1,9 +1,9 @@
 package com.dio.live.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,10 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class Calendario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Calendario implements Serializable {
+
     private Long idCalendario;
 
     private Long idTipoData;

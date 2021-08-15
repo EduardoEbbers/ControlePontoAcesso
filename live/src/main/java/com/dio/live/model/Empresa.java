@@ -3,10 +3,8 @@ package com.dio.live.model;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigDecimal;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -14,9 +12,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class Empresa {
-    @Id
+public class Empresa implements Serializable {
+
     private Long idEmpresa;
 
     private String descricao;

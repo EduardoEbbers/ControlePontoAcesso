@@ -19,7 +19,8 @@ public class TipoDataController {
     @PostMapping
     public ResponseEntity<TipoData> createTipoData(@RequestBody TipoData tipoData) {
         try {
-            if((tipoData.getIdTipoData() == null) || (tipoData.getDescricao() == null)) {
+            if((tipoData.getIdTipoData() == null)
+                    || (tipoData.getDescricao() == null)) {
                 throw new Error("Tipo Data Id e Descrição são Obrigatórios!");
             }
             if(tipoData.getIdTipoData() <= 0) {
@@ -41,14 +42,14 @@ public class TipoDataController {
             return new ResponseEntity<>(
                     tipoDataService.findAll(),
                     HttpStatus.OK);
-        } catch(Error e) {
-            return new ResponseEntity(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST);
         } catch(NoSuchElementException e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.NOT_FOUND);
+        } catch(Error e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -64,21 +65,22 @@ public class TipoDataController {
             return new ResponseEntity<>(
                     tipoDataService.findById(idTipoData),
                     HttpStatus.OK);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping
     public ResponseEntity<TipoData> updateTipoData(@RequestBody TipoData tipoData) {
         try {
-            if((tipoData.getIdTipoData() == null) || (tipoData.getDescricao() == null)) {
+            if((tipoData.getIdTipoData() == null)
+                    || (tipoData.getDescricao() == null)) {
                 throw new Error("Tipo Data Id e Descrição são Obrigatórios!");
             }
             if(tipoData.getIdTipoData() <= 0) {
@@ -88,14 +90,14 @@ public class TipoDataController {
                     tipoDataService.update(tipoData),
                     HttpStatus.OK
             );
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -110,14 +112,14 @@ public class TipoDataController {
             }
             tipoDataService.delete(idTipoData);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
-        } catch(NoSuchElementException e1) {
-            return new ResponseEntity(
-                    e1.getMessage(),
-                    HttpStatus.NOT_FOUND);
         }
     }
 }

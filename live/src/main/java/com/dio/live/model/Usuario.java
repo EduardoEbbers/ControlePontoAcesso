@@ -1,9 +1,9 @@
 package com.dio.live.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -13,10 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class Usuario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Usuario implements Serializable {
     private Long idUsuario;
 
     private Long idCategoriaUsuario;

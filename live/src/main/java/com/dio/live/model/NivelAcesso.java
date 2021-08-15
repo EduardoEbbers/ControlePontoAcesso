@@ -3,7 +3,7 @@ package com.dio.live.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,9 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder
-@Entity
-public class NivelAcesso {
-    @Id
+public class NivelAcesso implements Serializable {
+
     private Long idNivelAcesso;
 
     private String descricao;

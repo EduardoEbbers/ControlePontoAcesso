@@ -16,7 +16,8 @@ public class NivelAcessoService {
 
     public NivelAcesso create(NivelAcesso nivelAcesso) {
         try {
-            Optional<NivelAcesso> nivAcesso = nivelAcessoRepository.findById(nivelAcesso.getIdNivelAcesso());
+            Optional<NivelAcesso> nivAcesso = nivelAcessoRepository
+                    .findById(nivelAcesso.getIdNivelAcesso());
             if(nivAcesso.isPresent()) {
                 throw new Error("Nível Acesso já existe!");
             }
@@ -29,7 +30,9 @@ public class NivelAcessoService {
     public List<NivelAcesso> findAll() {
         try {
             return nivelAcessoRepository.findAll();
-        } catch (Error e) {
+        } catch(NoSuchElementException e) {
+            throw new NoSuchElementException("Níveis de Acesso não existem!");
+        } catch(Error e) {
             throw new Error(e.getMessage());
         }
     }
