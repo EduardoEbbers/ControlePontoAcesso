@@ -1,10 +1,13 @@
 package com.dio.live.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -32,19 +35,15 @@ public class BancoHora implements Serializable {
 
     @Column(name = "DATA_TRABALHADA",
             nullable = false)
-    @Temporal(value = TemporalType.DATE)
-    private Date dataTrabalhada;
+    @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+    private LocalDate dataTrabalhada;
 
     @Column(name = "QUANTIDADE_HORAS_TRABALHADA",
-            nullable = false,
-            precision = 4,
-            scale = 2)
+            nullable = false)
     private BigDecimal quantidadeHorasTrabalhada;
 
     @Column(name = "SALDO_HORAS_TRABALHADA",
-            nullable = false,
-            precision = 4,
-            scale = 2)
+            nullable = false)
     private BigDecimal saldoHorasTrabalhada;
 
     @ManyToOne

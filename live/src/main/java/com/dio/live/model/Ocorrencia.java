@@ -29,8 +29,4 @@ public class Ocorrencia implements Serializable {
     @Column(name = "DESCRICAO",
             nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "ocorrencia")
-    @ElementCollection
-    private List<Movimentacao> movimentacoes;
 }

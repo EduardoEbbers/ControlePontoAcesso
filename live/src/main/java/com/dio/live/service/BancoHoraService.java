@@ -1,6 +1,7 @@
 package com.dio.live.service;
 
 import com.dio.live.model.BancoHora;
+import com.dio.live.model.Movimentacao;
 import com.dio.live.repository.BancoHoraRepository;
 import com.dio.live.repository.MovimentacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,18 @@ public class BancoHoraService {
 
     public BancoHora create(BancoHora bancoHora) {
         try {
-            movimentacaoRepository
+            Movimentacao mov = movimentacaoRepository
                     .findById(bancoHora.getIdMovimentacao())
                     .orElseThrow(() -> new NoSuchElementException("Movimentação não existe!"));
             Optional<BancoHora> bancHora = bancoHoraRepository
                     .findById(bancoHora.getIdBancoHora());
             if(bancHora.isPresent()) {
-                throw new Error("Banco Horas já existe!");
+                throw new Error("Banco Hora já existe!");
             }
-            return bancoHoraRepository.save(bancoHora);
+            bancoHora.setMovimentacao(mov);
+            var bancHoraRepo = bancoHoraRepository.save(bancoHora);
+            bancHoraRepo.setIdMovimentacao(bancoHora.getIdMovimentacao());
+            return bancHoraRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -37,8 +41,6 @@ public class BancoHoraService {
     public List<BancoHora> findAll() {
         try {
             return bancoHoraRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Bnacos de Horas não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -48,7 +50,7 @@ public class BancoHoraService {
         try {
             return bancoHoraRepository
                     .findById(id)
-                    .orElseThrow(() -> new NoSuchElementException("Banco Horas não existe!"));
+                    .orElseThrow(() -> new NoSuchElementException("Banco Hora não existe!"));
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -56,13 +58,16 @@ public class BancoHoraService {
 
     public BancoHora update(BancoHora bancoHora) {
         try {
-            movimentacaoRepository
+            Movimentacao mov = movimentacaoRepository
                     .findById(bancoHora.getIdMovimentacao())
                     .orElseThrow(() -> new NoSuchElementException("Movimentação não existe!"));
             bancoHoraRepository
                     .findById(bancoHora.getIdBancoHora())
-                    .orElseThrow(() -> new NoSuchElementException("Banco Horas não existe!"));
-            return bancoHoraRepository.save(bancoHora);
+                    .orElseThrow(() -> new NoSuchElementException("Banco Hora não existe!"));
+            bancoHora.setMovimentacao(mov);
+            var bancHoraRepo = bancoHoraRepository.save(bancoHora);
+            bancHoraRepo.setIdMovimentacao(bancoHora.getIdMovimentacao());
+            return bancHoraRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }

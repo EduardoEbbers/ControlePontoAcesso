@@ -2,6 +2,7 @@ package com.dio.live.service;
 
 import com.dio.live.model.CategoriaUsuario;
 import com.dio.live.repository.CategoriaUsuarioRepository;
+import com.dio.live.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class CategoriaUsuarioService {
     @Autowired
     private CategoriaUsuarioRepository categoriaUsuarioRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public CategoriaUsuario create(CategoriaUsuario categoriaUsuario) {
         try {
@@ -30,8 +34,6 @@ public class CategoriaUsuarioService {
     public List<CategoriaUsuario> findAll() {
         try {
             return categoriaUsuarioRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Usuários não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -60,6 +62,14 @@ public class CategoriaUsuarioService {
 
     public void delete(Long id) {
         try {
+            var matchUsuario = usuarioRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(usuario -> usuario.getCategoriaUsuario().getIdCategoriaUsuario() == id);
+
+            if(matchUsuario) {
+                throw new Error("Usuário possui Categorias Usuario!");
+            }
             categoriaUsuarioRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Categoria Usuário não existe!"));

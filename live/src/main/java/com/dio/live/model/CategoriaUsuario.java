@@ -25,8 +25,4 @@ public class CategoriaUsuario implements Serializable {
     @Column(name = "DESCRICAO",
             nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "categoriaUsuario")
-    @ElementCollection
-    private List<Usuario> usuarios;
 }

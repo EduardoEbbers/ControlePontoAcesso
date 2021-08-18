@@ -1,7 +1,9 @@
 package com.dio.live.service;
 
 import com.dio.live.model.Calendario;
+import com.dio.live.model.TipoData;
 import com.dio.live.repository.CalendarioRepository;
+import com.dio.live.repository.MovimentacaoRepository;
 import com.dio.live.repository.TipoDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,12 @@ public class CalendarioService {
     @Autowired
     private TipoDataRepository tipoDataRepository;
 
+    @Autowired
+    private MovimentacaoRepository movimentacaoRepository;
+
     public Calendario create(Calendario calendario) {
         try {
-            tipoDataRepository
+            TipoData tipData = tipoDataRepository
                     .findById(calendario.getIdTipoData())
                     .orElseThrow(() -> new NoSuchElementException("Tipo Data não existe!"));
             Optional<Calendario> calend = calendarioRepository
@@ -28,7 +33,10 @@ public class CalendarioService {
             if(calend.isPresent()) {
                 throw new Error("Calendário já existe!");
             }
-            return calendarioRepository.save(calendario);
+            calendario.setTipoData(tipData);
+            var calendRepo = calendarioRepository.save(calendario);
+            calendRepo.setIdTipoData(calendario.getIdTipoData());
+            return calendRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -37,8 +45,6 @@ public class CalendarioService {
     public List<Calendario> findAll() {
         try {
             return calendarioRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Calendários não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -56,13 +62,16 @@ public class CalendarioService {
 
     public Calendario update(Calendario calendario) {
         try {
-            tipoDataRepository
+            TipoData tipData = tipoDataRepository
                     .findById(calendario.getIdTipoData())
                     .orElseThrow(() -> new NoSuchElementException("Tipo Data não existe!"));
             calendarioRepository
                     .findById(calendario.getIdCalendario())
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));
-            return calendarioRepository.save(calendario);
+            calendario.setTipoData(tipData);
+            var calendRepo = calendarioRepository.save(calendario);
+            calendRepo.setIdTipoData(calendario.getIdTipoData());
+            return calendRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -70,6 +79,14 @@ public class CalendarioService {
 
     public void delete(Long id) {
         try {
+            var matchMov = movimentacaoRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(movimentacao -> movimentacao.getCalendario().getIdCalendario() == id);
+
+            if(matchMov) {
+                throw new Error("Movimentação possui Calendário!");
+            }
             calendarioRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));

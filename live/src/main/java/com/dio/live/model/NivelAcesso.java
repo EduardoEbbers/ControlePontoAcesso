@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -25,12 +26,4 @@ public class NivelAcesso implements Serializable {
     @Column(name = "DESCRICAO",
             nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "nivelAcesso")
-    @ElementCollection
-    private List<Usuario> usuarios;
-
-    @OneToMany(mappedBy = "nivelAcesso")
-    @ElementCollection
-    private List<Localidade> localidade;
 }

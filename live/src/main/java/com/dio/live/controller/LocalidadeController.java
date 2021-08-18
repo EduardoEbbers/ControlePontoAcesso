@@ -37,6 +37,10 @@ public class LocalidadeController {
             return new ResponseEntity<>(
                     localidadeService.create(localidade),
                     HttpStatus.CREATED);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),

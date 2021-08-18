@@ -21,7 +21,7 @@ public class BancoHoraController {
     private MovimentacaoService movimentacaoService;
 
     @PostMapping
-    public ResponseEntity<BancoHora> createBancoHoras(@RequestBody BancoHora bancoHora) {
+    public ResponseEntity<BancoHora> createBancoHora(@RequestBody BancoHora bancoHora) {
         try {
             if((bancoHora.getIdBancoHora() == null)
                     || (bancoHora.getIdMovimentacao() == null)
@@ -29,26 +29,32 @@ public class BancoHoraController {
                     || (bancoHora.getDataTrabalhada() == null)
                     || (bancoHora.getQuantidadeHorasTrabalhada() == null)
                     || (bancoHora.getSaldoHorasTrabalhada() == null)) {
-                throw new Error("Banco Horas Id, Movimentação Id, Categoria Usuário, Data Trabalhada, Quantidade Horas Trabalhada e Saldo Horas Trabalhada são Obrigatórios!");
+                throw new Error("Banco Hora Id, Movimentação Id, Categoria Usuário, Data Trabalhada, Quantidade Horas Trabalhada e Saldo Horas Trabalhada são Obrigatórios!");
             }
             if(bancoHora.getIdBancoHora() <= 0) {
-                throw new Error("Banco Horas Id está incorreto!");
+                throw new Error("Banco Hora Id está incorreto!");
             }
             if(bancoHora.getIdMovimentacao() <= 0) {
                 throw new Error("Movimentação Id está incorreto!");
             }
+            // talvez colocar validacao para getDataTrabalhada, getQuantidadeHorasTrabalhada e getSaldoHorasTrabalhada
             return new ResponseEntity<>(
                     bancoHoraService.create(bancoHora),
                     HttpStatus.CREATED);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
+        //talvez colocar catch NotFOund
     }
 
     @GetMapping
-    public ResponseEntity<List<BancoHora>> getAllBancoHoras() {
+    public ResponseEntity<List<BancoHora>> getAllBancoHora() {
         try {
             return new ResponseEntity<>(
                     bancoHoraService.findAll(),
@@ -65,13 +71,13 @@ public class BancoHoraController {
     }
 
     @GetMapping("/{idBancoHora}")
-    public ResponseEntity<BancoHora> getBancoHorasById(@PathVariable("idBancoHora") Long idBancoHora) {
+    public ResponseEntity<BancoHora> getBancoHoraById(@PathVariable("idBancoHora") Long idBancoHora) {
         try {
             if(idBancoHora == null) {
-                throw new Error("Banco Horas Id é Obrigatório!");
+                throw new Error("Banco Hora Id é Obrigatório!");
             }
             if(idBancoHora <= 0) {
-                throw new Error("Banco Horas Id está incorreto!");
+                throw new Error("Banco Hora Id está incorreto!");
             }
             return new ResponseEntity<>(
                     bancoHoraService.findById(idBancoHora),
@@ -88,7 +94,7 @@ public class BancoHoraController {
     }
 
     @PutMapping
-    public ResponseEntity<BancoHora> updateBancoHoras(@RequestBody BancoHora bancoHora) {
+    public ResponseEntity<BancoHora> updateBancoHora(@RequestBody BancoHora bancoHora) {
         try {
             if((bancoHora.getIdBancoHora() == null)
                     || (bancoHora.getIdMovimentacao() == null)
@@ -96,10 +102,10 @@ public class BancoHoraController {
                     || (bancoHora.getDataTrabalhada() == null)
                     || (bancoHora.getQuantidadeHorasTrabalhada() == null)
                     || (bancoHora.getSaldoHorasTrabalhada() == null)) {
-                throw new Error("Banco Horas Id, Movimentação Id, Categoria Usuário, Data Trabalhada, Quantidade Horas Trabalhada e Saldo Horas Trabalhada são Obrigatórios!");
+                throw new Error("Banco Hora Id, Movimentação Id, Categoria Usuário, Data Trabalhada, Quantidade Horas Trabalhada e Saldo Horas Trabalhada são Obrigatórios!");
             }
             if(bancoHora.getIdBancoHora() <= 0) {
-                throw new Error("Banco Horas Id está incorreto!");
+                throw new Error("Banco Hora Id está incorreto!");
             }
             if(bancoHora.getIdMovimentacao() <= 0) {
                 throw new Error("Movimentação Id está incorreto!");
@@ -120,7 +126,7 @@ public class BancoHoraController {
     }
 
     @DeleteMapping("/{idBancoHora}")
-    public ResponseEntity deleteBancoHoras(@PathVariable("idBancoHora") Long idBancoHora) {
+    public ResponseEntity deleteBancoHora(@PathVariable("idBancoHora") Long idBancoHora) {
         try {
             if(idBancoHora == null) {
                 throw new Error("Banco Horas Id é Obrigatório!");

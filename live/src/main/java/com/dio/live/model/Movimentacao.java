@@ -1,10 +1,12 @@
 package com.dio.live.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -35,13 +37,13 @@ public class Movimentacao implements Serializable {
 
     @Column(name = "ENTRADA_DATA_MOVIMENTACAO",
             nullable = false)
-    @Temporal(value = TemporalType.DATE)
-    private Date entradaDataMovimentacao;
+    @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+    private LocalDate entradaDataMovimentacao;
 
     @Column(name = "SAIDA_DATA_MOVIMENTACAO",
             nullable = false)
-    @Temporal(value = TemporalType.DATE)
-    private Date saidaDataMovimentacao;
+    @JsonFormat(pattern = "dd/MM/yyyy", shape = JsonFormat.Shape.STRING)
+    private LocalDate saidaDataMovimentacao;
 
     @Column(name = "PERIODO_PERMANENCIA",
             nullable = false,
@@ -69,8 +71,4 @@ public class Movimentacao implements Serializable {
             foreignKey = @ForeignKey(name = "USUARIO_MOV_FK"),
             referencedColumnName = "ID_USUARIO")
     private Usuario usuario;
-
-    @OneToMany(mappedBy = "movimentacao")
-    @ElementCollection
-    private List<BancoHora> bancoHoras;
 }

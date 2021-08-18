@@ -49,14 +49,20 @@ public class MovimentacaoController {
             if(movimentacao.getIdCalendario() <= 0) {
                 throw new Error("Calendário Id está incorreto!");
             }
+            //faltando validacao para getEntradaDataMovimentacao, getSaidaDataMovimentacao, getPeriodoPermanencia
             return new ResponseEntity<>(
                     movimentacaoService.create(movimentacao),
                     HttpStatus.CREATED);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
+        //talvez um catch NoSuch
     }
 
     @GetMapping

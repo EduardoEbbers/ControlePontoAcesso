@@ -1,5 +1,9 @@
 package com.dio.live.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
@@ -49,11 +53,13 @@ public class Usuario implements Serializable {
     @Column(name = "INICIO_JORNADA_TRABALHO",
             nullable = false)
     @Temporal(value = TemporalType.TIME)
+    @JsonFormat(pattern = "mm:ss")
     private Date inicioJornadaTrabalho;
 
     @Column(name = "SAIDA_JORNADA_TRABALHO",
             nullable = false)
     @Temporal(value = TemporalType.TIME)
+    @JsonFormat(pattern = "mm:ss")
     private Date saidaJornadaTrabalho;
 
     @ManyToOne
@@ -83,8 +89,4 @@ public class Usuario implements Serializable {
             foreignKey = @ForeignKey(name = "EMPRESA_USUARIO_FK"),
             referencedColumnName = "ID_EMPRESA")
     private Empresa empresa;
-
-    @OneToMany(mappedBy = "usuario")
-    @ElementCollection
-    private List<Movimentacao> movimentacoes;
 }

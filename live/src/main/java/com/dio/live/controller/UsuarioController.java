@@ -57,14 +57,20 @@ public class UsuarioController {
             if(usuario.getIdJornadaTrabalho() <= 0) {
                 throw new Error("Jornada Trabalho Id está incorreto!");
             }
+            //talvez colocar a validacao para ToleranciaAtraso, InicioJornadaTrabalho e SaidaJornadaTrabalho
             return new ResponseEntity<>(
                     usuarioService.create(usuario),
                     HttpStatus.CREATED);
+        } catch(NoSuchElementException e) {
+            return new ResponseEntity(
+                    e.getMessage(),
+                    HttpStatus.NOT_FOUND);
         } catch(Error e) {
             return new ResponseEntity(
                     e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
+        //talvez colocar catch
     }
 
     @GetMapping

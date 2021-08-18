@@ -1,6 +1,7 @@
 package com.dio.live.service;
 
 import com.dio.live.model.Localidade;
+import com.dio.live.model.NivelAcesso;
 import com.dio.live.repository.LocalidadeRepository;
 import com.dio.live.repository.NivelAcessoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LocalidadeService {
@@ -20,7 +22,7 @@ public class LocalidadeService {
 
     public Localidade create(Localidade localidade) {
         try {
-            nivelAcessoRepository
+            NivelAcesso nivAcess = nivelAcessoRepository
                     .findById(localidade.getIdNivelAcesso())
                     .orElseThrow(() -> new NoSuchElementException("Nível Acesso não existe!"));
             Optional<Localidade> loc = localidadeRepository
@@ -28,7 +30,10 @@ public class LocalidadeService {
             if(loc.isPresent()) {
                 throw new Error("Localidade já existe!");
             }
-            return localidadeRepository.save(localidade);
+            localidade.setNivelAcesso(nivAcess);
+            var locRepo = localidadeRepository.save(localidade);
+            locRepo.setIdNivelAcesso(localidade.getIdNivelAcesso());
+            return locRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -37,8 +42,6 @@ public class LocalidadeService {
     public List<Localidade> findAll() {
         try {
             return localidadeRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Localidades não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -56,13 +59,16 @@ public class LocalidadeService {
 
     public Localidade update(Localidade localidade) {
         try {
-            nivelAcessoRepository
+            NivelAcesso nivAcess = nivelAcessoRepository
                     .findById(localidade.getIdNivelAcesso())
                     .orElseThrow(() -> new NoSuchElementException("Nível Acesso não existe!"));
             localidadeRepository
                     .findById(localidade.getIdLocalidade())
                     .orElseThrow(() -> new NoSuchElementException("Localidade não existe!"));
-            return localidadeRepository.save(localidade);
+            localidade.setNivelAcesso(nivAcess);
+            var loc = localidadeRepository.save(localidade);
+            loc.setIdNivelAcesso(localidade.getIdNivelAcesso());
+            return loc;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }

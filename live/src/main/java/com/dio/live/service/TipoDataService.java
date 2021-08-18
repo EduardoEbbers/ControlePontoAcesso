@@ -1,6 +1,8 @@
 package com.dio.live.service;
 
+import com.dio.live.model.Calendario;
 import com.dio.live.model.TipoData;
+import com.dio.live.repository.CalendarioRepository;
 import com.dio.live.repository.TipoDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class TipoDataService {
     @Autowired
     private TipoDataRepository tipoDataRepository;
+
+    @Autowired
+    private CalendarioRepository calendarioRepository;
 
     public TipoData create(TipoData tipoData) {
         try {
@@ -30,8 +35,6 @@ public class TipoDataService {
     public List<TipoData> findAll() {
         try {
             return tipoDataRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Tipos de Data não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -60,6 +63,14 @@ public class TipoDataService {
 
     public void delete(Long id) {
         try {
+            var matchCalend = calendarioRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(calendario -> calendario.getTipoData().getIdTipoData() == id);
+
+            if(matchCalend) {
+                throw new Error("Calendário possui Tipo Data!");
+            }
             tipoDataRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Tipo Data não existe!"));

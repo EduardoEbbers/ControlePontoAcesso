@@ -25,8 +25,4 @@ public class TipoData implements Serializable {
     @Column(name = "DESCRICAO",
             nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "tipoData")
-    @ElementCollection
-    private List<Calendario> calendarios;
 }

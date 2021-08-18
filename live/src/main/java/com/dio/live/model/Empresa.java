@@ -1,8 +1,12 @@
 package com.dio.live.model;
 
 import lombok.*;
+import org.springframework.context.PayloadApplicationEvent;
 
 import javax.persistence.*;
+import javax.validation.Payload;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,7 +32,7 @@ public class Empresa implements Serializable {
 
     @Column(name = "CNPJ",
             nullable = false,
-            length = 11)
+            length = 14)
     private String cnpj;
 
     @Column(name = "ENDERECO",
@@ -51,8 +55,4 @@ public class Empresa implements Serializable {
             nullable = false,
             length = 15)
     private String telefone;
-
-    @OneToMany(mappedBy = "empresa")
-    @ElementCollection
-    private List<Usuario> usuarios;
 }

@@ -1,6 +1,7 @@
 package com.dio.live.service;
 
 import com.dio.live.model.Ocorrencia;
+import com.dio.live.repository.MovimentacaoRepository;
 import com.dio.live.repository.OcorrenciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class OcorrenciaService {
     @Autowired
     private OcorrenciaRepository ocorrenciaRepository;
+
+    @Autowired
+    private MovimentacaoRepository movimentacaoRepository;
 
     public Ocorrencia create(Ocorrencia ocorrencia) {
         try {
@@ -30,8 +34,6 @@ public class OcorrenciaService {
     public List<Ocorrencia> findAll() {
         try {
             return ocorrenciaRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Ocorrências não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -60,6 +62,14 @@ public class OcorrenciaService {
 
     public void delete(Long id) {
         try {
+            var matchMov = movimentacaoRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(movimentacao -> movimentacao.getOcorrencia().getIdOcorrencia() == id);
+
+            if(matchMov) {
+                throw new Error("Movimentação possui Ocorrência!");
+            }
             ocorrenciaRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Ocorrência não existe!"));

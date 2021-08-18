@@ -2,6 +2,7 @@ package com.dio.live.service;
 
 import com.dio.live.model.Empresa;
 import com.dio.live.repository.EmpresaRepository;
+import com.dio.live.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public Empresa create(Empresa empresa) {
         try {
@@ -30,9 +34,7 @@ public class EmpresaService {
     public List<Empresa> findAll() {
         try {
             return empresaRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Empresas não existem!");
-        }  catch (Error e) {
+        } catch (Error e) {
             throw new Error(e.getMessage());
         }
     }
@@ -60,6 +62,14 @@ public class EmpresaService {
 
     public void delete(Long id) {
         try {
+            var matchUsuario = usuarioRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(usuario -> usuario.getEmpresa().getIdEmpresa() == id);
+
+            if(matchUsuario) {
+                throw new Error("Usuário possui Empresa!");
+            }
             empresaRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Empresa não existe!"));

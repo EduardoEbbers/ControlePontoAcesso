@@ -25,8 +25,4 @@ public class JornadaTrabalho implements Serializable {
     @Column(name = "DESCRICAO",
             nullable = false)
     private String descricao;
-
-    @OneToMany(mappedBy = "jornadaTrabalho")
-    @ElementCollection
-    private List<Usuario> usuarios;
 }

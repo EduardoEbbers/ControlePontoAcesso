@@ -1,10 +1,10 @@
 package com.dio.live.service;
 
+import com.dio.live.model.Calendario;
 import com.dio.live.model.Movimentacao;
-import com.dio.live.repository.CalendarioRepository;
-import com.dio.live.repository.MovimentacaoRepository;
-import com.dio.live.repository.OcorrenciaRepository;
-import com.dio.live.repository.UsuarioRepository;
+import com.dio.live.model.Ocorrencia;
+import com.dio.live.model.Usuario;
+import com.dio.live.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +25,18 @@ public class MovimentacaoService {
 
     @Autowired
     private CalendarioRepository calendarioRepository;
-    
+
+    @Autowired
+    private BancoHoraRepository bancoHoraRepository;
     public Movimentacao create(Movimentacao movimentacao) {
         try {
-            usuarioRepository
+            Usuario usuar = usuarioRepository
                     .findById(movimentacao.getIdUsuario())
                     .orElseThrow(() -> new NoSuchElementException("Usuário não existe!"));
-            ocorrenciaRepository
+            Ocorrencia ocorr = ocorrenciaRepository
                     .findById(movimentacao.getIdOcorrencia())
                     .orElseThrow(() -> new NoSuchElementException("Ocorrência não existe!"));
-            calendarioRepository
+            Calendario calend = calendarioRepository
                     .findById(movimentacao.getIdCalendario())
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));
             Optional<Movimentacao> mov = movimentacaoRepository
@@ -42,7 +44,14 @@ public class MovimentacaoService {
             if(mov.isPresent()) {
                 throw new Error("Movimentação já existe!");
             }
-            return movimentacaoRepository.save(movimentacao);
+            movimentacao.setUsuario(usuar);
+            movimentacao.setOcorrencia(ocorr);
+            movimentacao.setCalendario(calend);
+            var movRepo = movimentacaoRepository.save(movimentacao);
+            movRepo.setIdUsuario(movimentacao.getIdUsuario());
+            movRepo.setIdOcorrencia(movimentacao.getIdOcorrencia());
+            movRepo.setIdCalendario(movimentacao.getIdCalendario());
+            return movRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -51,8 +60,6 @@ public class MovimentacaoService {
     public List<Movimentacao> findAll() {
         try {
             return movimentacaoRepository.findAll();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Movimentações não existem!");
         } catch (Error e) {
             throw new Error(e.getMessage());
         }
@@ -70,19 +77,26 @@ public class MovimentacaoService {
 
     public Movimentacao update(Movimentacao movimentacao) {
         try {
-            usuarioRepository
+            Usuario usuar = usuarioRepository
                     .findById(movimentacao.getIdUsuario())
                     .orElseThrow(() -> new NoSuchElementException("Usuário não existe!"));
-            ocorrenciaRepository
+            Ocorrencia ocorr = ocorrenciaRepository
                     .findById(movimentacao.getIdOcorrencia())
                     .orElseThrow(() -> new NoSuchElementException("Ocorrência não existe!"));
-            calendarioRepository
+            Calendario calend = calendarioRepository
                     .findById(movimentacao.getIdCalendario())
                     .orElseThrow(() -> new NoSuchElementException("Calendário não existe!"));
             movimentacaoRepository
                     .findById(movimentacao.getIdMovimentacao())
                     .orElseThrow(() -> new NoSuchElementException("Movimentação não existe!"));
-            return movimentacaoRepository.save(movimentacao);
+            movimentacao.setUsuario(usuar);
+            movimentacao.setOcorrencia(ocorr);
+            movimentacao.setCalendario(calend);
+            var movRepo = movimentacaoRepository.save(movimentacao);
+            movRepo.setIdUsuario(movimentacao.getIdUsuario());
+            movRepo.setIdOcorrencia(movimentacao.getIdOcorrencia());
+            movRepo.setIdCalendario(movimentacao.getIdCalendario());
+            return movRepo;
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -90,6 +104,13 @@ public class MovimentacaoService {
 
     public void delete(Long id) {
         try {
+            var matchBancHora = bancoHoraRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(bancoHora -> bancoHora.getMovimentacao().getIdMovimentacao() == id);
+            if(matchBancHora) {
+                throw new Error("Movimentação possui Banco Hora!");
+            }
             movimentacaoRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Movimentação não existe!"));

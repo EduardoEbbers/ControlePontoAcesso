@@ -2,6 +2,7 @@ package com.dio.live.service;
 
 import com.dio.live.model.JornadaTrabalho;
 import com.dio.live.repository.JornadaTrabalhoRepository;
+import com.dio.live.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class JornadaTrabalhoService {
     @Autowired
     private JornadaTrabalhoRepository jornadaTrabalhoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public JornadaTrabalho create(JornadaTrabalho jornadaTrabalho) {
         try {
@@ -30,8 +34,6 @@ public class JornadaTrabalhoService {
     public List<JornadaTrabalho> findAll() {
         try {
             return jornadaTrabalhoRepository.findAll();
-        } catch(NoSuchElementException e) {
-            throw new NoSuchElementException("Jornadas de Trabalho não existem!");
         } catch(Error e) {
             throw new Error(e.getMessage());
         }
@@ -60,6 +62,14 @@ public class JornadaTrabalhoService {
 
     public void delete(Long id) {
         try {
+            var matchUsuario = usuarioRepository
+                    .findAll()
+                    .stream()
+                    .anyMatch(usuario -> usuario.getJornadaTrabalho().getIdJornadaTrabalho() == id);
+
+            if(matchUsuario) {
+                throw new Error("Usuário possui Jornada Trabalho!");
+            }
             jornadaTrabalhoRepository
                     .findById(id)
                     .orElseThrow(() -> new NoSuchElementException("Jornada Trabalho não existe!"));

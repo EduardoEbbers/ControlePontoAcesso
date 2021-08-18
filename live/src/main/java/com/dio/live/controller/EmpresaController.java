@@ -32,6 +32,9 @@ public class EmpresaController {
             if(empresa.getIdEmpresa() <= 0) {
                 throw new Error("Empresa Id está incorreto!");
             }
+            if(empresa.getCnpj().length() > 14) {
+                throw new Error("CNPJ deve possuir 14 dígitos!");
+            }
             return new ResponseEntity<>(
                     empresaService.create(empresa),
                     HttpStatus.CREATED);
